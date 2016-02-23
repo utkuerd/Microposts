@@ -1,0 +1,12 @@
+﻿@helper FullTitle(string title) {
+    string baseTitle = "Ruby on Rails Tutorial Sample App";
+
+    if (String.Empty.Equals(title))
+    {
+        @baseTitle
+    }
+    else
+    {
+        @(title +" | " + baseTitle)
+    }
+}
