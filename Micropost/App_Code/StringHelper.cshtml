@@ -1,12 +1,15 @@
-﻿@helper FullTitle(string title) {
+﻿@inherits System.Web.WebPages.HelperPage
+
+@helper FullTitle(string title)
+{
     string baseTitle = "Ruby on Rails Tutorial Sample App";
 
     if (String.Empty.Equals(title))
     {
-        @baseTitle
+		    @baseTitle
     }
     else
     {
-        @(title +" | " + baseTitle)
+		    @(title + " | " + baseTitle)
     }
 }

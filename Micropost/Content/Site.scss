@@ -1,28 +1,43 @@
 ﻿/* mixins, variables, etc. */
+
+$gray-medium-light: #eaeaea;
+$gray-light : #777;
+$gray : #808080;
+$gray-darker : #424242;
+
 /* universal */
+
 body {
-  padding-top: 60px; }
+  padding-top: 60px;
+}
 
 section {
-  overflow: auto; }
+  overflow: auto;
+}
 
 textarea {
-  resize: vertical; }
+  resize: vertical;
+}
 
 .center {
-  text-align: center; }
-  .center h1 {
-    margin-bottom: 10px; }
+  text-align: center;
+  h1 {
+    margin-bottom: 10px;
+  }
+}
 
 /* typography */
+
 h1, h2, h3, h4, h5, h6 {
-  line-height: 1; }
+  line-height: 1;
+}
 
 h1 {
   font-size: 3em;
   letter-spacing: -2px;
   margin-bottom: 30px;
-  text-align: center; }
+  text-align: center;
+}
 
 h2 {
   font-size: 1.2em;
@@ -30,13 +45,17 @@ h2 {
   margin-bottom: 30px;
   text-align: center;
   font-weight: normal;
-  color: #777; }
+  color: $gray-light;
+}
 
 p {
   font-size: 1.1em;
-  line-height: 1.7em; }
+  line-height: 1.7em;
+}
+
 
 /* header */
+
 #logo {
   float: left;
   margin-right: 10px;
@@ -45,27 +64,35 @@ p {
   text-transform: uppercase;
   letter-spacing: -1px;
   padding-top: 9px;
-  font-weight: bold; }
-  #logo:hover {
+  font-weight: bold;
+  &:hover {
     color: white;
-    text-decoration: none; }
+    text-decoration: none;
+  }
+}
 
 /* footer */
+
 footer {
   margin-top: 45px;
   padding-top: 5px;
-  border-top: 1px solid #eaeaea;
-  color: #777; }
-  footer a {
-    color: #808080; }
-    footer a:hover {
-      color: #424242; }
-  footer small {
-    float: left; }
-  footer ul {
+  border-top: 1px solid $gray-medium-light;
+  color: $gray-light;
+  a {
+    color: $gray;
+    &:hover {
+      color: $gray-darker;
+    }
+  }
+  small {
+    float: left;
+  }
+  ul {
     float: right;
-    list-style: none; }
-    footer ul li {
+    list-style: none;
+    li {
       float: left;
-      margin-left: 15px; }
-
+      margin-left: 15px;
+    }
+  }
+}
