@@ -13,6 +13,12 @@ namespace Micropost
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+                routes.MapRoute(
+                name: "Default",
+                url: "",
+                defaults: new { controller = "StaticPages", action = "Home", id = UrlParameter.Optional }
+            );
+
             routes.MapRoute(
                 name: "Help",
                 url: "help",
@@ -31,14 +37,32 @@ namespace Micropost
             routes.MapRoute(
                 name: "SignUp",
                 url: "signup",
-                defaults: new { controller = "User", action = "New" }
+                defaults: new { controller = "Users", action = "New" }
             );
 
             routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "StaticPages", action = "Home", id = UrlParameter.Optional }
+                name: "UsersPath",
+                url: "users",
+                defaults: new { controller = "Users", action = "Create" }
             );
+
+            routes.MapRoute(
+                name: "UserPath",
+                url: "users/{id}",
+                defaults: new { controller = "Users", action = "Show" }
+            );
+
+            routes.MapRoute(
+                name: "User",
+                url: "users/{action}/{id}",
+                defaults: new { controller = "Users", action = "Index" }
+            );
+
+            //routes.MapRoute(
+            //    name: "Default",
+            //    url: "{controller}/{action}/{id}",
+            //    defaults: new { controller = "StaticPages", action = "Home", id = UrlParameter.Optional }
+            //);
         }
     }
 }

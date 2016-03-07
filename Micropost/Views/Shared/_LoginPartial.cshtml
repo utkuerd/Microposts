@@ -8,7 +8,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            @Html.ActionLink("sample app", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            @Html.RouteLink("sample app", "Default", new { area = "" }, new { id ="logo" })            
         </div>
         <div class="navbar-collapse collapse">            
             @if (Request.IsAuthenticated)
@@ -33,7 +33,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         @*<li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
                             <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>*@
-                        <li>@Html.ActionLink("Home", "Home")</li>
+                        <li>@Html.RouteLink("Home", "Default")</li>
                         <li>@Html.RouteLink("Help", "Help")</li>
                         <li>@Html.ActionLink("Log in", "#")</li>
                     </ul>

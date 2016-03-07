@@ -27,6 +27,7 @@ namespace Micropost.Models
         public string Email {
             get
             {
+                if (_EMail == null) return null;
                 return _EMail.ToLower();
             }
             set { _EMail = value; }
@@ -47,7 +48,7 @@ namespace Micropost.Models
         public string PasswordDigest {
             get
             {
-                return BCrypt.Net.BCrypt.HashPassword(Password, BCrypt.Net.BCrypt.GenerateSalt(12));
+                return _PasswordDigest ?? BCrypt.Net.BCrypt.HashPassword(Password, BCrypt.Net.BCrypt.GenerateSalt(12));
             }
             set { _PasswordDigest = value; }  
         }

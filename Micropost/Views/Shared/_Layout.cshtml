@@ -9,9 +9,15 @@
 
 </head>
 <body>
-    @Html.Partial("_LoginPartial")    
+    @Html.Partial("_LoginPartial")
     <div class="container body-content">
-        @RenderBody()        
+        @{
+            foreach (var kvp in TempData)
+            {
+                <div class="alert alert-@kvp.Key">@kvp.Value</div>;
+            }
+        }
+        @RenderBody()
         @Html.Partial("_FooterPartial")
     </div>
 
@@ -19,4 +25,5 @@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
+
 </html>

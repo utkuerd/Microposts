@@ -1,0 +1,15 @@
+﻿@{var errors = ViewData.ModelState.Values.SelectMany(x => x.Errors);}
+@using System.Data.Entity.Design.PluralizationServices
+@{var plService = PluralizationService.CreateService(new System.Globalization.CultureInfo("en-US"));}
+
+@if (errors.Count() > 0)
+{
+    <div id="error_explanation">
+        <div class="alert alert-danger">
+            The form contains @errors.Count() @(errors.Count() > 1 ?
+                                                        plService.Pluralize("error") :
+                                                        "error").
+        </div>
+        @Html.ValidationSummary(false, "", new { @class = "a" })
+    </div>
+                }
