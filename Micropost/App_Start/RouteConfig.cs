@@ -58,11 +58,25 @@ namespace Micropost
                 defaults: new { controller = "Users", action = "Index" }
             );
 
-            //routes.MapRoute(
-            //    name: "Default",
-            //    url: "{controller}/{action}/{id}",
-            //    defaults: new { controller = "StaticPages", action = "Home", id = UrlParameter.Optional }
-            //);
+            routes.MapRoute(
+                name: "LoginPathGet",
+                url: "login",
+                defaults: new {controller = "Sessions",action="New"},
+                constraints: new { httpmethod = new HttpMethodConstraint("GET")}
+            );
+
+            routes.MapRoute(
+                name: "LoginPathPost",
+                url: "login",
+                defaults: new { controller = "Sessions", action = "Create" },
+                constraints: new { httpmethod = new HttpMethodConstraint("POST") }
+            );
+
+            routes.MapRoute(
+                name: "LogoutPath",
+                url: "logout",
+                defaults: new { controller = "Sessions", action = "Destroy" }
+            );
         }
     }
 }

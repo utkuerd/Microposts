@@ -53,6 +53,10 @@
       <HintPath>..\packages\FluentValidation.6.2.1.0\lib\Net45\FluentValidation.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="FluentValidation.Mvc, Version=6.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.MVC5.6.2.1.0\lib\Net45\FluentValidation.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.0.1011, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -211,6 +215,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\SessionsController.cs" />
     <Compile Include="Controllers\StaticPagesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
@@ -218,6 +223,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\SessionsHelper.cs" />
     <Compile Include="Migrations\201602242334510_Initialize.cs" />
     <Compile Include="Migrations\201602242334510_Initialize.Designer.cs">
       <DependentUpon>201602242334510_Initialize.cs</DependentUpon>
@@ -229,6 +235,14 @@
     <Compile Include="Migrations\201603041918169_CustomUserPassword.cs" />
     <Compile Include="Migrations\201603041918169_CustomUserPassword.Designer.cs">
       <DependentUpon>201603041918169_CustomUserPassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603072321420_UniqueIndexForUserEmail.cs" />
+    <Compile Include="Migrations\201603072321420_UniqueIndexForUserEmail.Designer.cs">
+      <DependentUpon>201603072321420_UniqueIndexForUserEmail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603091603510_AuthenticationTokens.cs" />
+    <Compile Include="Migrations\201603091603510_AuthenticationTokens.Designer.cs">
+      <DependentUpon>201603091603510_AuthenticationTokens.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -399,6 +413,7 @@
     <Content Include="Views\Users\New.cshtml" />
     <Content Include="Views\Users\Show.cshtml" />
     <Content Include="Views\Shared\_FormErrorPartial.cshtml" />
+    <Content Include="Views\Sessions\New.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201602242334510_Initialize.resx">
@@ -409,6 +424,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603041918169_CustomUserPassword.resx">
       <DependentUpon>201603041918169_CustomUserPassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603072321420_UniqueIndexForUserEmail.resx">
+      <DependentUpon>201603072321420_UniqueIndexForUserEmail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603091603510_AuthenticationTokens.resx">
+      <DependentUpon>201603091603510_AuthenticationTokens.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -421,6 +442,7 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

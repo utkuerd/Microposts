@@ -1,4 +1,5 @@
 ﻿using Micropost.DataAccess;
+using Micropost.Helper;
 using Micropost.Models;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,7 @@ namespace Micropost.Controllers
         {        
             if (ModelState.IsValid && userRepository.SaveUser(newUser))
             {
+                SessionsHelper.LogIn(newUser);
                 TempData["success"] = "Welcome to the Sample App!";
                 return RedirectToRoute("UserPath", new { id = newUser.Id });            
             }

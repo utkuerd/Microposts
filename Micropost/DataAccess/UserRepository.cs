@@ -16,9 +16,14 @@ namespace Micropost.DataAccess
             dbContext = context;
         }
 
+        public User GetUserByEmail(string email)
+        {
+            return dbContext.CustomUsers.FirstOrDefault(user => user.Email.Equals(email));
+        }
+
         public User GetUserById(int userId)
         {
-            return dbContext.CustomUsers.First(user => user.Id == userId);
+            return dbContext.CustomUsers.FirstOrDefault(user => user.Id == userId);
         }
 
         public bool SaveUser(User newUser)

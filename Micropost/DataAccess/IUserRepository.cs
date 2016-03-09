@@ -9,6 +9,7 @@ namespace Micropost.DataAccess
     public interface IUserRepository
     {
         User GetUserById(int userId);
+        User GetUserByEmail(string email);
         bool SaveUser(User obj);
     }
 }

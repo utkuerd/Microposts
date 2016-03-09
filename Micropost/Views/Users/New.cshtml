@@ -11,19 +11,19 @@
         {
             @Html.Partial("_FormErrorPartial");
 
-            @Html.AntiForgeryToken();
+            @Html.AntiForgeryToken()
 
-            @Html.LabelFor(model => model.Name);
-            @Html.TextBoxFor(model => model.Name, new { @class = "form-control" });
+            @Html.LabelFor(model => model.Name)
+            @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
 
-            @Html.LabelFor(model => model.Email);
-            @Html.TextBoxFor(model => model.Email, new { type = "email", @class="form-control" });
+            @Html.LabelFor(model => model.Email)
+            @Html.TextBoxFor(model => model.Email, new { type = "email", @class="form-control" })
 
-            @Html.LabelFor(model => model.Password);
-            @Html.PasswordFor(model => model.Password, new { @class = "form-control" });
+            @Html.LabelFor(model => model.Password)
+            @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
 
-            @Html.LabelFor(model => model.PasswordConfirmation, "Confirmation");
-            @Html.PasswordFor(model => model.PasswordConfirmation, new { @class = "form-control" });
+            @Html.LabelFor(model => model.PasswordConfirmation, "Confirmation")
+            @Html.PasswordFor(model => model.PasswordConfirmation, new { @class = "form-control" })
 
             <input type="submit" value="Create My Account" class="btn btn-primary" />
         }
