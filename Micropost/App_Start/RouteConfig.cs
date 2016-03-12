@@ -13,11 +13,11 @@ namespace Micropost
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-                routes.MapRoute(
-                name: "Default",
-                url: "",
-                defaults: new { controller = "StaticPages", action = "Home", id = UrlParameter.Optional }
-            );
+            routes.MapRoute(
+            name: "Default",
+            url: "",
+            defaults: new { controller = "StaticPages", action = "Home", id = UrlParameter.Optional }
+        );
 
             routes.MapRoute(
                 name: "Help",
@@ -43,26 +43,41 @@ namespace Micropost
             routes.MapRoute(
                 name: "UsersPath",
                 url: "users",
-                defaults: new { controller = "Users", action = "Create" }
+                defaults: new { controller = "Users", action = "Create" },
+                constraints: new { httpmethod = new HttpMethodConstraint("POST") }
             );
 
             routes.MapRoute(
                 name: "UserPath",
                 url: "users/{id}",
-                defaults: new { controller = "Users", action = "Show" }
+                defaults: new { controller = "Users", action = "Show" },
+                constraints: new { httpmethod = new HttpMethodConstraint("GET") }
+            );
+
+            routes.MapRoute(
+                name: "AllUsersPath",
+                url: "users",
+                defaults: new { controller = "Users", action = "Index" }
+            );
+
+            routes.MapRoute(
+                name: "UserUpdate",
+                url: "users/{id}",
+                defaults: new { controller = "Users", action = "Update" },
+                constraints: new { httpmethod = new HttpMethodConstraint("POST") }
             );
 
             routes.MapRoute(
                 name: "User",
-                url: "users/{action}/{id}",
+                url: "users/{id}/{action}",
                 defaults: new { controller = "Users", action = "Index" }
             );
 
             routes.MapRoute(
                 name: "LoginPathGet",
                 url: "login",
-                defaults: new {controller = "Sessions",action="New"},
-                constraints: new { httpmethod = new HttpMethodConstraint("GET")}
+                defaults: new { controller = "Sessions", action = "New" },
+                constraints: new { httpmethod = new HttpMethodConstraint("GET") }
             );
 
             routes.MapRoute(

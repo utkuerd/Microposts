@@ -1,0 +1,15 @@
+﻿@model Micropost.Models.User
+@using Micropost.Helper
+
+@{
+    var currentUser = SessionsHelper.CurrentUser();
+}
+<li>
+    @GravatarHelper.Gravatar(Model.Email, Model.Name, "50")
+    @Html.ActionLink(Model.Name, "Show", new { id = Model.Id })
+    @if (currentUser.Admin && currentUser != Model)
+    {
+        @Html.Raw(" | ") 
+        @Html.ActionLink("delete", "destroy", new { id = Model.Id })
+    }
+</li>

@@ -1,5 +1,7 @@
 namespace Micropost.Migrations
 {
+    using Faker;
+    using Models;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -14,18 +16,35 @@ namespace Micropost.Migrations
 
         protected override void Seed(Micropost.Models.ApplicationDbContext context)
         {
-            //  This method will be called after migrating to the latest version.
+            User first = new User()
+            {
+                Name = "Example User",
+                Email = "example@railstutorial.org",
+                Password = "foobar",
+                PasswordConfirmation = "foobar",
+                Admin = true
+            };
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+            context.CustomUsers.AddOrUpdate(first);
+
+            for (int i = 0; i < 99; i ++)
+            {
+                var name = Name.FullName();
+                var email = String.Format("example-{0}@railstutorial.org", i + 1);
+                var password = "password";
+
+                User newUser = new User()
+                {
+                    Name = name,
+                    Email = email,
+                    Password = password,
+                    PasswordConfirmation = password
+                };
+
+                context.CustomUsers.AddOrUpdate(newUser);
+            }
+
+            context.SaveChanges();
         }
     }
 }

@@ -1,0 +1,19 @@
+﻿@inherits System.Web.WebPages.HelperPage
+
+@* Gravatar helper method that constructs gravatar URL for user Email *@
+@helper Gravatar(string email, string name, string size = "80")
+{
+
+using (var md5 = System.Security.Cryptography.MD5.Create())
+{
+    byte[] b = md5.ComputeHash(System.Text.Encoding.ASCII.GetBytes(email));
+    var md5StringBuilder = new System.Text.StringBuilder();
+    for (int i = 0; i < b.Length; i++)
+    {
+        md5StringBuilder.Append(b[i].ToString("x2"));
+    }
+
+    var gravatarURL = String.Format("https://secure.gravatar.com/avatar/{0}?s={1}", md5StringBuilder.ToString(), size);
+        <img src="@gravatarURL" alt="@name" class="gravatar" />
+}
+}

@@ -37,16 +37,16 @@
             <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>*@
                         <li>@Html.RouteLink("Home", "Default")</li>
                         <li>@Html.RouteLink("Help", "Help")</li>
-                        @if (SessionsHelper.LoggedIn())
+                        @if (SessionsHelper.IsLoggedIn())
                         {
-                            <li>@Html.ActionLink("Users", "#")</li>
+                            <li>@Html.RouteLink("Users", "AllUsersPath")</li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     Account <b class="caret"></b>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>@Html.RouteLink("Profile","UsersPath",new { id = SessionsHelper.CurrentUser().Id })</li>
-                                    <li>@Html.ActionLink("Settings","#")</li>
+                                    <li>@Html.RouteLink("Settings","User",new { action = "Edit", id = SessionsHelper.CurrentUser().Id })</li>
                                     <li class="divider"></li>
                                     <li>
                                         @Html.RouteLink("Log out", "LogoutPath")

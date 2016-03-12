@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+using System.Web.Mvc;
 using System.Web.Security;
 using System.Web.SessionState;
 
@@ -24,7 +25,7 @@ namespace Micropost.Helper
 
         public static User CurrentUser()
         {
-            HttpContext context = System.Web.HttpContext.Current;
+            HttpContext context = HttpContext.Current;
             try
             {
                 if (context.Session["UserId"] != null)
@@ -78,9 +79,14 @@ namespace Micropost.Helper
             
         }
 
-        public static bool LoggedIn()
+        public static bool IsLoggedIn()
         {
             return CurrentUser() != null;
+        }
+
+        public static bool IsCurrentUser(User user)
+        {
+            return CurrentUser() != user;
         }
 
         internal static void LogOut()

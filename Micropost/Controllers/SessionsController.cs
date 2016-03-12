@@ -37,8 +37,8 @@ namespace Micropost.Controllers
                 else
                 {
                     SessionsHelper.Forget(loginUser);
-                }                   
-                return RedirectToRoute("UserPath", new { id = loginUser.Id });
+                }                                   
+                return RedirectBackOr("UserPath", new { id = loginUser.Id });
             }
             else
             {
@@ -46,14 +46,30 @@ namespace Micropost.Controllers
                 return View("New", session);
             }
         }
-        
-       public ActionResult Destroy()
+
+
+        public ActionResult Destroy()
         {
-            if (SessionsHelper.LoggedIn())
+            if (SessionsHelper.IsLoggedIn())
             {
                 SessionsHelper.LogOut();
             }
             return RedirectToRoute("Default");
+        }
+
+        private ActionResult RedirectBackOr(String spec, object p)
+        {
+            Uri url = null;
+            try
+            {
+                url = Session["ForwardingUrl"] as Uri;
+                Session.Remove("ForwardingUrl");
+                return Redirect(url.ToString());
+            }
+            catch (Exception)
+            {                
+                return RedirectToRoute(spec, p);
+            }
         }
     }
 }

@@ -26,6 +26,11 @@ namespace Micropost.DataAccess
             return dbContext.CustomUsers.FirstOrDefault(user => user.Id == userId);
         }
 
+        public IEnumerable<User> GetUsers()
+        {
+            return dbContext.CustomUsers;
+        }
+
         public bool SaveUser(User newUser)
         {
             try
@@ -37,6 +42,40 @@ namespace Micropost.DataAccess
             catch (Exception)
             {
                 return false;
+            }
+        }
+
+        public bool UpdateUser(User user)
+        {
+            try
+            {
+                var userInDB = dbContext.CustomUsers.Find(user.Id);
+
+                dbContext.Entry(userInDB).CurrentValues.SetValues(user);
+                dbContext.Entry(userInDB).State = EntityState.Modified;                
+                if (user.Password == null)
+                {
+                    dbContext.Entry(userInDB).Property("PasswordDigest").IsModified = false;
+                }
+                // dbContext.Entry(userInDB).Property("Admin").IsModified = false;
+
+                dbContext.SaveChanges();
+                return true;
+            }
+            catch(Exception)
+            {
+                return false;
+            }
+        }
+
+        internal void DeleteUser(int id)
+        {
+            var userToBeDeleted = dbContext.CustomUsers.SingleOrDefault(user => user.Id == id);
+
+            if (userToBeDeleted != null)
+            {
+                dbContext.CustomUsers.Remove(userToBeDeleted);
+                dbContext.SaveChanges();
             }
         }
     }

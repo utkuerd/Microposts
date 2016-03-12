@@ -36,12 +36,11 @@ namespace Micropost.Models
             set { _EMail = value; }
         }
 
-        [Required]
+        
         [MinLength(6)]
         [NotMapped]
         public string Password { get; set; }
 
-        [Required]
         [MinLength(6)]
         [Compare("Password")]        
         [NotMapped]
@@ -51,15 +50,50 @@ namespace Micropost.Models
         public string PasswordDigest {
             get
             {
-                return _PasswordDigest ?? BCrypt.HashPassword(Password, BCrypt.GenerateSalt(12));
+                if (_PasswordDigest != null)
+                {
+                    return _PasswordDigest;
+                }   
+                else if (Password != null)
+                {
+                    return BCrypt.HashPassword(Password, BCrypt.GenerateSalt(12));
+                }             
+                else
+                {
+                    return null;
+                }
             }
             set { _PasswordDigest = value; }  
         }
 
         public string RememberToken { get; set; }
         public string RememberDigest { get; set; }
+        
+        public bool Admin { get; set; }
 
+        public override bool Equals(object obj)
+        {
+            // If parameter is null return false.
+            if (obj == null)
+            {
+                return false;
+            }
 
+            // If parameter cannot be cast to Point return false.
+            User p = obj as User;
+            if ((System.Object)p == null)
+            {
+                return false;
+            }
+
+            // Return true if the fields match:
+            return Id == p.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
 
         public bool Authenticate(string password)
         {
@@ -108,10 +142,10 @@ namespace Micropost.Models
             RuleFor(x => x.Email).Must(BeUniqueEmail).WithMessage("Email address should be unique.");
         }
 
-        private bool BeUniqueEmail(string email)
+        private bool BeUniqueEmail(User u, string email)
         {
             var _db = new ApplicationDbContext();
-            if (_db.CustomUsers.FirstOrDefault(x => x.Email.Equals(email,StringComparison.OrdinalIgnoreCase)) == null)
+            if (_db.CustomUsers.FirstOrDefault(x => x.Email.Equals(email,StringComparison.OrdinalIgnoreCase) && x.Id != u.Id ) == null)
             {
                 return true;
             }

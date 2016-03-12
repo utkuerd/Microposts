@@ -3,26 +3,11 @@
 @{
     ViewBag.Title = Model.Name;
 }
-
-@* Gravatar helper method that constructs gravatar URL for user Email *@
-@helper Gravatar()
-{
-
-string md5String;
-using (var md5 = System.Security.Cryptography.MD5.Create())
-{
-
-    md5String = string.Join("", md5.ComputeHash(System.Text.Encoding.ASCII.GetBytes(Model.Email.ToLower())).Select(b => b.ToString("x2")));
-}
-var gravatarURL = String.Format("https://secure.gravatar.com/avatar/{0}", md5String);
-    <img src="@gravatarURL" alt="@Model.Name" class="gravatar" />
-
-}
 <div class="row">
     <aside class="col-md-4">
         <section class="user_info">            
             <h1>
-                @Gravatar()
+                @GravatarHelper.Gravatar(Model.Email.ToLower(),Model.Name)
                 @Model.Name
             </h1>
         </section>

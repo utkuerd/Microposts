@@ -11,5 +11,7 @@ namespace Micropost.DataAccess
         User GetUserById(int userId);
         User GetUserByEmail(string email);
         bool SaveUser(User obj);
+        bool UpdateUser(User user);
+        IEnumerable<User> GetUsers();
     }
 }
