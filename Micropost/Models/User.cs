@@ -11,7 +11,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Micropost.Models
 {
     using BCrypt.Net;
-
+    using Controllers;
+    using System.Diagnostics;
     [Validator(typeof(UserEmailUniqueValidator))]
     public class User
     {
@@ -34,9 +35,8 @@ namespace Micropost.Models
                 return _EMail.ToLower();
             }
             set { _EMail = value; }
-        }
+        }        
 
-        
         [MinLength(6)]
         [NotMapped]
         public string Password { get; set; }
@@ -66,10 +66,28 @@ namespace Micropost.Models
             set { _PasswordDigest = value; }  
         }
 
+        [NotMapped]
         public string RememberToken { get; set; }
         public string RememberDigest { get; set; }
         
         public bool Admin { get; set; }
+
+        [NotMapped]
+        public string ActivationToken { get; set; }
+        public string ActivationDigest { get; set; }
+        public bool Activated { get; set; }        
+        public DateTime? ActivatedAt { get; set; }
+
+        [NotMapped]
+        public string ResetToken { get; set; }
+        public string ResetDigest { get; set; }        
+        public DateTime? ResetSentAt { get; set; }
+
+        public User()
+        {
+            CreateActivationDigest();
+        }
+
 
         public override bool Equals(object obj)
         {
@@ -100,17 +118,31 @@ namespace Micropost.Models
             return BCrypt.Verify(password, _PasswordDigest);
         }
 
-        public bool TokenAuthenticated(string token)
+        public bool TokenAuthenticated(string attribute,string token)
         {
-            if (RememberDigest == null) return false;
+            Type t = typeof(User);
 
-            return BCrypt.Verify(token, RememberDigest);
+            var property = t.GetProperty(attribute + "Digest");
+
+            if (property == null) return false;
+
+            string digest = property.GetValue(this) as string;
+
+            if (digest == null) return false;
+
+            return BCrypt.Verify(token, digest);
         }
 
         public void Remember()
         {
             RememberToken = User.NewToken();
             RememberDigest = User.Digest(RememberToken);
+        }
+
+        private void CreateActivationDigest()
+        {
+            ActivationToken = User.NewToken();
+            ActivationDigest = User.Digest(ActivationToken);
         }
 
         public void Forget()
@@ -129,9 +161,41 @@ namespace Micropost.Models
             var rngCrypto = new System.Security.Cryptography.RNGCryptoServiceProvider();
             rngCrypto.GetBytes(linkBytes);
             var text = Convert.ToBase64String(linkBytes);
-            var textEnc = Uri.EscapeDataString(text);
+            var textEnc = text.TrimEnd(new char[] { '=' }).Replace('+','-').Replace('/','_');
 
             return textEnc;
+        }      
+        
+        public void Activate()
+        {
+            Activated = true;
+            ActivatedAt = DateTime.Now;
+        }  
+
+        public void SendActivationLink()
+        {
+            var email = new UserMailerController().AccountActivation(this);            
+
+            //email.Deliver();
+        }
+
+        internal void SendPasswordResetEmail()
+        {
+            var email = new UserMailerController().PasswordReset(this);
+
+            email.Deliver();
+        }
+
+        internal void CreateResetDigest()
+        {
+            ResetToken = User.NewToken();
+            ResetDigest = User.Digest(ResetToken);
+            ResetSentAt = DateTime.Now;
+        }
+
+        internal bool PasswordResetExpired()
+        {
+            return ResetSentAt < DateTime.Now - new TimeSpan(2, 0, 0);
         }
     }
 

@@ -29,16 +29,28 @@ namespace Micropost.Controllers
             User loginUser = userRepository.GetUserByEmail(session["Email"].ToLowerInvariant()); 
             if (loginUser != null && loginUser.Authenticate(session["Password"]))
             {
-                SessionsHelper.LogIn(loginUser);
-                if (Convert.ToBoolean(session["RememberMe"]))
+                if (loginUser.Activated)
                 {
-                    SessionsHelper.Remember(loginUser);
+                    SessionsHelper.LogIn(loginUser);
+                    if (Convert.ToBoolean(session["RememberMe"]))
+                    {
+                        SessionsHelper.Remember(loginUser);
+                    }
+                    else
+                    {
+                        SessionsHelper.Forget(loginUser);
+                    }                                   
+                    return RedirectBackOr("UserPath", new { id = loginUser.Id });
                 }
                 else
                 {
-                    SessionsHelper.Forget(loginUser);
-                }                                   
-                return RedirectBackOr("UserPath", new { id = loginUser.Id });
+                    string message = "Account not activated. ";
+                    message += "Check your email for activation link. ";
+
+                    TempData["warning"] = message;
+
+                    return RedirectToRoute("Default");
+                }
             }
             else
             {

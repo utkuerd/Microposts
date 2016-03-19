@@ -1,11 +1,7 @@
 ﻿@model Dictionary<string, string>
 
 @{
-    ViewBag.Title = "Log in";
-    string email = "Email";
-    string password = "Password";
-    Model[email] = "";
-    Model[password] = "";
+    ViewBag.Title = "Log in";    
 }
 <h1>Log in</h1>
 
@@ -16,20 +12,21 @@
             @Html.AntiForgeryToken()
 
 
-            @Html.Label(email)
+            @Html.Label("Email")
             @Html.TextBox("session[Email]", "", new { type = "email", @class = "form-control" })
-                        
+
 
             @Html.Label("Password")
+            @Html.RouteLink("(forgot password)", "PasswordResetRoute", new { action = "New" })            
             @Html.Password("session[Password]", "", new { @class = "form-control" })
 
             <div class="checkbox inline">
                 @Html.CheckBox("session[RememberMe]", new { id = "session_remember_me" })
                 @Html.Label("Remember me on this computer")
             </div>
-            <input type = "submit" value = "Log in" class="btn btn-primary" />
-        }
-        <p>New user? @Html.RouteLink("Sign up now!", "Signup")</p>
+            <input type="submit" value="Log in" class="btn btn-primary" />
+            }
+            <p>New user? @Html.RouteLink("Sign up now!", "Signup")</p>
+        </div>
     </div>
-</div>
-@*<%= link_to "Sign up now!", signup_path %>*@
+    @*<%= link_to "Sign up now!", signup_path %>*@

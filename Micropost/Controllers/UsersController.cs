@@ -13,7 +13,7 @@ namespace Micropost.Controllers
 {
     public class UsersController : Controller
     {
-        private UserRepository userRepository;
+        private UserRepository userRepository;        
 
         public UsersController()
         {
@@ -39,12 +39,12 @@ namespace Micropost.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(User newUser)
-        {        
+        {            
             if (ModelState.IsValid && userRepository.SaveUser(newUser))
-            {
-                SessionsHelper.LogIn(newUser);
-                TempData["success"] = "Welcome to the Sample App!";
-                return RedirectToRoute("UserPath", new { id = newUser.Id });            
+            {                
+                newUser.SendActivationLink();
+                TempData["info"] = "Please check your email to activate your account.";
+                return RedirectToRoute("LoginPathGet");
             }
             else
             {
@@ -102,7 +102,7 @@ namespace Micropost.Controllers
                 return redirect;
             }
 
-            userRepository.DeleteUser(id);
+            userRepository.DeleteUser(Id);
             TempData["success"] = "User Deleted";
 
             return RedirectToRoute("AllUsersPath");

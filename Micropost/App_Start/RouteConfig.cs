@@ -92,6 +92,29 @@ namespace Micropost
                 url: "logout",
                 defaults: new { controller = "Sessions", action = "Destroy" }
             );
+
+            routes.MapRoute(
+                name: "AccountActivationRoute",
+                url: "account_activations/{token}/edit",
+                defaults: new { controller = "AccountActivation", action = "Edit" }
+            );
+            
+            routes.MapRoute(
+                name: "PasswordResetRoute",
+                url: "password_resets/{action}",
+                defaults: new { controller = "PasswordResets", action = "Create"}
+            );
+
+            routes.MapRoute(
+                name: "PasswordResetEditRoute",
+                url: "password_resets/{token}/Edit",
+                defaults: new { controller = "PasswordResets", action = "Edit" }
+            );
+            routes.MapRoute(
+                name: "PasswordResetUpdateRoute",
+                url: "password_resets/{token}/Update",
+                defaults: new { controller = "PasswordResets", action = "Update" }
+            );
         }
     }
 }

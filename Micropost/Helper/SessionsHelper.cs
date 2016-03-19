@@ -47,7 +47,7 @@ namespace Micropost.Helper
                                             Convert.FromBase64String(userIdCookieVal))));
 
                     User authUser = userRepository.GetUserById(userId);
-                    if (authUser != null && authUser.TokenAuthenticated(sessionCookie["RememberToken"]))
+                    if (authUser != null && authUser.TokenAuthenticated("Remember",sessionCookie["RememberToken"]))
                     {
                         LogIn(authUser);
                         _currentUser = authUser;

@@ -31,6 +31,12 @@ namespace Micropost.DataAccess
             return dbContext.CustomUsers;
         }
 
+        internal void CreateResetDigest(User user)
+        {
+            user.CreateResetDigest();
+            dbContext.SaveChanges();
+        }
+
         public bool SaveUser(User newUser)
         {
             try
@@ -76,6 +82,22 @@ namespace Micropost.DataAccess
             {
                 dbContext.CustomUsers.Remove(userToBeDeleted);
                 dbContext.SaveChanges();
+            }
+        }
+
+        internal bool UpdatePassword(User user, string password, string passwordConfirmation)
+        {
+            try
+            {
+                user.Password = password;
+                user.PasswordConfirmation = passwordConfirmation;
+                dbContext.Entry(user).Property("PasswordDigest").IsModified = true;
+                dbContext.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
     }

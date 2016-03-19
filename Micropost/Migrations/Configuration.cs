@@ -16,13 +16,18 @@ namespace Micropost.Migrations
 
         protected override void Seed(Micropost.Models.ApplicationDbContext context)
         {
+            ResetDB(context.Database);
+
+
             User first = new User()
             {
                 Name = "Example User",
                 Email = "example@railstutorial.org",
                 Password = "foobar",
                 PasswordConfirmation = "foobar",
-                Admin = true
+                Admin = true,
+                Activated = true,
+                ActivatedAt = DateTime.Now
             };
 
             context.CustomUsers.AddOrUpdate(first);
@@ -38,13 +43,21 @@ namespace Micropost.Migrations
                     Name = name,
                     Email = email,
                     Password = password,
-                    PasswordConfirmation = password
+                    PasswordConfirmation = password,
+                    Activated = true,
+                    ActivatedAt = DateTime.Now
                 };
 
                 context.CustomUsers.AddOrUpdate(newUser);
             }
 
             context.SaveChanges();
+        }
+
+        private void ResetDB(Database database)
+        {
+            database.ExecuteSqlCommand("DELETE FROM Users");
+            database.ExecuteSqlCommand("DBCC CHECKIDENT('Users', RESEED, 0)");
         }
     }
 }
