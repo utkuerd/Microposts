@@ -1,15 +1,17 @@
-﻿@model Micropost.Models.User
-@using Micropost.Helper
-
-@{
-    var currentUser = SessionsHelper.CurrentUser();
-}
+﻿@model Micropost.Models.ApplicationUser
 <li>
-    @GravatarHelper.Gravatar(Model.Email, Model.Name, "50")
-    @Html.ActionLink(Model.Name, "Show", new { id = Model.Id })
-    @if (currentUser.Admin && currentUser != Model)
+    @GravatarHelper.Gravatar(Model.Email, Model.FullName, "50")
+    @if (User.IsInRole("Admin") && User != Model)
     {
-        @Html.Raw(" | ") 
-        @Html.ActionLink("delete", "destroy", new { id = Model.Id })
+        using (Html.BeginRouteForm("UserDelete", new { area = "", id = Model.Id }, FormMethod.Post, new {@class= "form-inline" , id = "deleteForm"+Model.Id}))
+        {
+            @Html.HttpMethodOverride(HttpVerbs.Delete)
+            @Html.AntiForgeryToken()
+
+            @Html.RouteLink(Model.FullName, "User", new { id = Model.Id })
+            @Html.Raw(" | ")
+            @Html.RouteLink("delete", "UserDelete", new {id = Model.Id}, htmlAttributes: new { @class= "deletelink", id = "deleteLink"+Model.Id })
+            //<a href="#" class="deletelink" id="deleteLink@{ @Html.Raw(Model.Id); }">delete</a>
+        }
     }
 </li>

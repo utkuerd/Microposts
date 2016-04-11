@@ -1,9 +1,10 @@
+using Microsoft.AspNet.Identity;
+
 namespace Micropost.Migrations
 {
     using Faker;
     using Models;
     using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
@@ -11,53 +12,62 @@ namespace Micropost.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = false;            
         }
 
         protected override void Seed(Micropost.Models.ApplicationDbContext context)
         {
-            ResetDB(context.Database);
 
+            var userStore = new CustomUserStore(context); 
+            var userManager = new ApplicationUserManager(userStore); 
+            userManager.UserValidator = new UserValidator<ApplicationUser,int>(userManager) {AllowOnlyAlphanumericUserNames = false};
 
-            User first = new User()
+            if (!context.Roles.Any(role => role.Name.Equals("Admin")))
             {
-                Name = "Example User",
-                Email = "example@railstutorial.org",
-                Password = "foobar",
-                PasswordConfirmation = "foobar",
-                Admin = true,
-                Activated = true,
-                ActivatedAt = DateTime.Now
-            };
+                var roleStore = new CustomRoleStore(context);
+                var roleManager = new  RoleManager<CustomRole,int>(roleStore);    
+                var adminRole = new CustomRole("Admin");
 
-            context.CustomUsers.AddOrUpdate(first);
+                roleManager.Create(adminRole);
+            }
+
+            if (!context.Users.Any(user => user.Email.Equals("example@railstutorial.org")))
+            {                
+                var first = new ApplicationUser()
+                {
+                    FullName = "Example User",
+                    Email = "example@railstutorial.org",                    
+                    UserName = "example@railstutorial.org",
+                    EmailConfirmed = true
+                };
+
+                userManager.Create(first, "foobar");
+                userManager.AddToRole(first.Id, "Admin");
+            }            
 
             for (int i = 0; i < 99; i ++)
             {
                 var name = Name.FullName();
-                var email = String.Format("example-{0}@railstutorial.org", i + 1);
-                var password = "password";
+                var email = $"example-{i + 1}@railstutorial.org";
+                const string password = "password";
 
-                User newUser = new User()
+                var newUser = new ApplicationUser()
                 {
-                    Name = name,
+                    FullName = name,
                     Email = email,
-                    Password = password,
-                    PasswordConfirmation = password,
-                    Activated = true,
-                    ActivatedAt = DateTime.Now
+                    UserName =  email,
+                    EmailConfirmed = true
                 };
 
-                context.CustomUsers.AddOrUpdate(newUser);
-            }
-
-            context.SaveChanges();
-        }
-
-        private void ResetDB(Database database)
-        {
-            database.ExecuteSqlCommand("DELETE FROM Users");
-            database.ExecuteSqlCommand("DBCC CHECKIDENT('Users', RESEED, 0)");
-        }
+                if (!context.Users.Any(user => user.Email.Equals(email)))
+                {
+                    var result = userManager.Create(newUser, password);
+                    if (!result.Succeeded)
+                    {
+                        throw new Exception(string.Join("\n",result.Errors));
+                    }
+                }
+            }            
+        }       
     }
 }

@@ -1,23 +1,25 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
-using System.Data.Entity.Core.Objects;
 
 namespace Micropost.Models
 {
-    public partial class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public partial class ApplicationDbContext : IdentityDbContext<ApplicationUser, CustomRole, int, CustomUserLogin, CustomUserRole, CustomUserClaim>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("DefaultConnection")
         {
-        }
-
-        public DbSet<User> CustomUsers { get; set; }
+        }        
 
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {   
+            base.OnModelCreating(modelBuilder);     
+            modelBuilder.Entity<CustomRole>().Property(r => r.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);                       
         }
     }
 }

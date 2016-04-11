@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace Micropost
 {
@@ -26,6 +25,9 @@ namespace Micropost
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/micropost-js").Include(
+                        "~/Scripts/deleteforms.js"));
         }
     }
 }

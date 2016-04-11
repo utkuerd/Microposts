@@ -57,6 +57,10 @@
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="BCrypt.Net, Version=0.1.5073.29922, Culture=neutral, PublicKeyToken=6bcd409ee6bc9292, processorArchitecture=MSIL">
       <HintPath>..\packages\BCrypt-Official.0.1.109\lib\BCrypt.Net.dll</HintPath>
       <Private>True</Private>
@@ -261,19 +265,15 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="Controllers\AccountActivationController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\PasswordResetsController.cs" />
-    <Compile Include="Controllers\SessionsController.cs" />
     <Compile Include="Controllers\StaticPagesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\UserMailerController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
-    <Compile Include="DataAccess\IUserRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helper\SessionsHelper.cs" />
+    <Compile Include="Helper\SelfAuthorizeAttribute.cs" />
     <Compile Include="Migrations\201602242334510_Initialize.cs" />
     <Compile Include="Migrations\201602242334510_Initialize.Designer.cs">
       <DependentUpon>201602242334510_Initialize.cs</DependentUpon>
@@ -310,13 +310,19 @@
     <Compile Include="Migrations\201603151438550_PasswordReset.Designer.cs">
       <DependentUpon>201603151438550_PasswordReset.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603202142304_Identity.cs" />
+    <Compile Include="Migrations\201603202142304_Identity.Designer.cs">
+      <DependentUpon>201603202142304_Identity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603261557500_AspNetIdentity.cs" />
+    <Compile Include="Migrations\201603261557500_AspNetIdentity.Designer.cs">
+      <DependentUpon>201603261557500_AspNetIdentity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\DBContext.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\User.cs" />
-    <Compile Include="DataAccess\UserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -441,6 +447,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.2.1-vsdoc.js" />
+    <Content Include="Scripts\deleteforms.js" />
     <Content Include="Scripts\jquery-2.2.1.js" />
     <Content Include="Scripts\jquery-2.2.1.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -456,8 +463,6 @@
     <Content Include="Scripts\_references.js" />
     <Content Include="Views\Shared\_Mailer.txt.cshtml" />
     <Content Include="Views\Shared\_Mailer.html.cshtml" />
-    <Content Include="Views\PasswordResets\New.cshtml" />
-    <Content Include="Views\PasswordResets\Edit.cshtml" />
     <None Include="Views\UserMailer\PasswordReset.txt.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -473,34 +478,17 @@
     <Content Include="Views\StaticPages\About.cshtml" />
     <Content Include="Views\StaticPages\Contact.cshtml" />
     <Content Include="Views\StaticPages\Home.cshtml" />
-    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Views\Account\ConfirmEmail.cshtml" />
-    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
-    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
-    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\SendCode.cshtml" />
-    <Content Include="Views\Account\VerifyCode.cshtml" />
-    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
-    <Content Include="Views\Manage\ChangePassword.cshtml" />
-    <Content Include="Views\Manage\Index.cshtml" />
-    <Content Include="Views\Manage\ManageLogins.cshtml" />
-    <Content Include="Views\Manage\SetPassword.cshtml" />
-    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
-    <Content Include="Views\Shared\Lockout.cshtml" />
+    <Content Include="Views\Manage\UpdateProfile.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\StaticPages\Help.cshtml" />
     <Content Include="Views\Shared\_FooterPartial.cshtml" />
-    <Content Include="Views\Users\New.cshtml" />
     <Content Include="Views\Users\Show.cshtml" />
     <Content Include="Views\Shared\_FormErrorPartial.cshtml" />
-    <Content Include="Views\Sessions\New.cshtml" />
     <Content Include="Scripts\jquery-2.2.1.min.map" />
-    <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Shared\_User.cshtml" />
     <Content Include="Views\UserMailer\AccountActivation.html.cshtml" />
@@ -535,6 +523,12 @@
     <EmbeddedResource Include="Migrations\201603151438550_PasswordReset.resx">
       <DependentUpon>201603151438550_PasswordReset.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603202142304_Identity.resx">
+      <DependentUpon>201603202142304_Identity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603261557500_AspNetIdentity.resx">
+      <DependentUpon>201603261557500_AspNetIdentity.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -546,7 +540,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\AccountActivation\" />
+    <Folder Include="Views\Home\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

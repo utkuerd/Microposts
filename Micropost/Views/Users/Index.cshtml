@@ -1,4 +1,4 @@
-﻿@model PagedList.IPagedList<Micropost.Models.User>
+﻿@model PagedList.IPagedList<Micropost.Models.ApplicationUser>
 @using PagedList.Mvc;
 
 @{
@@ -11,21 +11,34 @@
 
 
     @Html.PagedListPager(Model,
-                        page => Url.Action("Index", new
-                        {
-                            page,
-                            sortOrder = ViewBag.CurrentSort,
-                            currentFilter = ViewBag.CurrentFilter
-                        }))
+        page => Url.Action("Index", new
+        {
+            page,
+            sortOrder = ViewBag.CurrentSort,
+            currentFilter = ViewBag.CurrentFilter
+        }))
 
     @foreach (var item in Model)
     {
         @Html.Partial("_User", item)
     }
-   
+
     @Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+        new {page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter}))
 
 </ul>
 
+@section scripts
+{   
+    <script type="text/javascript">
+        function changeDeleteLink() {
+            $(".deletelink").click( function (e) {                 
+                this.closest("form").submit(); 
+                return false; 
+            });            
+        }
+
+        $(document).ready(changeDeleteLink);
+    </script>
+}
 

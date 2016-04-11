@@ -1,11 +1,9 @@
 ﻿using ActionMailerNext.Mvc5_2;
 using Micropost.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Mail;
-using System.Web;
-using System.Web.Mvc;
+using System;
+using System.Threading.Tasks;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Micropost.Controllers
 {
@@ -15,22 +13,24 @@ namespace Micropost.Controllers
         {
             MailAttributes.From = new MailAddress("noreply@example.com");
         }
-
-        // GET: UserMailer
-        public EmailResult AccountActivation(User user)
+        
+        public EmailResult AccountActivation(ApplicationUser user, string code)
         {
             MailAttributes.To.Add(new MailAddress(user.Email));
             MailAttributes.Subject = "Account activation";
 
+            ViewBag.Code = code;
             return Email("AccountActivation",user);
         }
 
-        public EmailResult PasswordReset(User user)
+        public EmailResult PasswordReset(ApplicationUser user, string code)
         {
             MailAttributes.To.Add(new MailAddress(user.Email));
             MailAttributes.Subject = "Password reset";
 
+            ViewBag.Code = code;
             return Email("PasswordReset", user);
         }
+
     }
 }

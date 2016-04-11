@@ -1,11 +1,11 @@
-﻿@model Micropost.Models.User
+﻿@model Micropost.Models.ApplicationUser
 
 @{
     Layout = "~/Views/Shared/_Mailer.txt.cshtml";
 }
 
-Hi @Model.Name,
+Hi @Model.FullName,
 
 Welcome to the Sample App! Click on the link below to activate your account:
 
-@Url.RouteUrl("AccountActivationRoute", new { token = Model.ActivationToken , email = Model.Email}, Request.Url.Scheme)
+@Url.RouteUrl("AccountActivationRoute", new { code = ViewBag.Code , userId = Model.Id}, Request.Url.Scheme)
