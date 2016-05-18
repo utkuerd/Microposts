@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Micropost.Models;
+using Microposts.Models;
 using Microsoft.AspNet.Identity;
 
-namespace Micropost.Helper
+namespace Microposts.Helper
 {
     public class SelfAuthorizeAttribute: AuthorizeAttribute
     {

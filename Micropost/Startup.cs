@@ -1,8 +1,8 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(Micropost.Startup))]
-namespace Micropost
+[assembly: OwinStartupAttribute(typeof(Microposts.Startup))]
+namespace Microposts
 {
     public partial class Startup
     {

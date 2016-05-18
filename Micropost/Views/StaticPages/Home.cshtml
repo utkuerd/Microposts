@@ -1,15 +1,60 @@
-﻿<div class="center jumbotron">
-    <h1>Welcome to the Sample App</h1>
+﻿@using Microsoft.AspNet.Identity
+@using System.Web.Mvc
+@using Microsoft.AspNet.Identity.Owin;
+@model Microposts.ViewModels.NewMicropost
 
-    <h2>
-        This is the home page for the
-        <a href="http://www.railstutorial.org/">Ruby on Rails Tutorial</a>
-        sample application.
-    </h2>
+@if (Request.IsAuthenticated)
+{    
+    <div class="row">
+        <aside class="col-md-4">
+            <section class="user_info">
+                @Html.Partial("_UserInfo")                
+            </section>
+            <section class="micropost_form">
+                @Html.Partial("_MicropostForm")                
+            </section>
+        </aside>
+        <div class="col-md-8">
+            <h3>Micropost Feed</h3>
+            @Html.Partial("_Feed")
+        </div>
+    </div>
+}
+else
+{
+    <div class="center jumbotron">
+        <h1>Welcome to the Sample App</h1>
 
-    @Html.RouteLink("Sign up now!", "SignUpForm", new { }, new { @class = "btn btn-lg btn-primary" })
-</div>
+        <h2>
+            This is the home page for the
+            <a href="http://www.railstutorial.org/">Ruby on Rails Tutorial</a>
+            sample application.
+        </h2>
 
-<a href="http://rubyonrails.org">
-    <img src='@Url.Content("~/Content/images/rails.png")' alt="Rails logo" />
-</a>
+        @Html.RouteLink("Sign up now!", "SignUpForm", new { }, new { @class = "btn btn-lg btn-primary" })
+    </div>
+
+    <a href="http://rubyonrails.org">
+        <img src='@Url.Content("~/Content/images/rails.png")' alt="Rails logo" />
+    </a>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+        function changeDeleteLink() {            
+            $(".deletelink").click( function (e) {
+                this.closest("form").submit();
+                return false;
+            });
+        }
+
+        $(document).ready(changeDeleteLink);
+        $('#micropost_picture').bind('change', function () {
+            var size_in_megabytes = this.files[0].size / 1024 / 1024;
+            if (size_in_megabytes > 5) {
+                alert('Maximum file size is 5MB. Please choose a smaller file.');
+            }
+        });
+    </script>
+}

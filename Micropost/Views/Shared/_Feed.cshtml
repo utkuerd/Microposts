@@ -1,0 +1,27 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@using Microposts.Models;
+
+@if (((IPagedList<Micropost>)ViewBag.FeedItems).Any())
+{
+    @Html.PagedListPager((IPagedList)ViewBag.FeedItems,
+                page => Url.Action("Home", new
+                {
+                    page,
+                    sortOrder = ViewBag.CurrentSort,
+                    currentFilter = ViewBag.CurrentFilter
+    }))
+    <ol class="microposts">
+        @foreach (var item in (IPagedList<Micropost>)ViewBag.FeedItems)
+        {
+            @Html.Partial("_Micropost",item)
+        }
+    </ol>
+    @Html.PagedListPager((IPagedList)ViewBag.FeedItems,
+                page => Url.Action("Home", new
+                {
+                    page,
+                    sortOrder = ViewBag.CurrentSort,
+                    currentFilter = ViewBag.CurrentFilter
+                }))
+}

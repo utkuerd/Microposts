@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Micropost.Controllers;
+using Microposts.Controllers;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
-using Micropost.Models;
+using Microposts.Models;
 
-namespace Micropost
+namespace Microposts
 {
     public class EmailService : IIdentityMessageService
     {

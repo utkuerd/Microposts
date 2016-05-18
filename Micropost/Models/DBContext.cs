@@ -2,14 +2,16 @@
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
 
-namespace Micropost.Models
+namespace Microposts.Models
 {
     public partial class ApplicationDbContext : IdentityDbContext<ApplicationUser, CustomRole, int, CustomUserLogin, CustomUserRole, CustomUserClaim>
     {
         public ApplicationDbContext()
             : base("DefaultConnection")
         {
-        }        
+        } 
+        
+        public DbSet<Micropost> Microposts { get; set; }       
 
         public static ApplicationDbContext Create()
         {

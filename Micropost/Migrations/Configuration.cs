@@ -1,6 +1,6 @@
 using Microsoft.AspNet.Identity;
 
-namespace Micropost.Migrations
+namespace Microposts.Migrations
 {
     using Faker;
     using Models;
@@ -8,16 +8,15 @@ namespace Micropost.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Micropost.Models.ApplicationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;            
         }
 
-        protected override void Seed(Micropost.Models.ApplicationDbContext context)
+        protected override void Seed(ApplicationDbContext context)
         {
-
             var userStore = new CustomUserStore(context); 
             var userManager = new ApplicationUserManager(userStore); 
             userManager.UserValidator = new UserValidator<ApplicationUser,int>(userManager) {AllowOnlyAlphanumericUserNames = false};
@@ -67,7 +66,18 @@ namespace Micropost.Migrations
                         throw new Exception(string.Join("\n",result.Errors));
                     }
                 }
-            }            
+            }
+
+            var users = context.Users.OrderBy(user => user.Id).Take(6).ToList();
+            for (int i = 0; i < 50; i++)
+            {
+                var content = Lorem.Sentence(5);
+                foreach(var user in users)
+                {
+                    Micropost m = new Micropost { Content = content, User = user, CreatedAt = DateTime.Now };
+                    user.Microposts.Add(m);
+                }
+            }          
         }       
     }
 }

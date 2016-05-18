@@ -1,11 +1,11 @@
 ﻿using ActionMailerNext.Mvc5_2;
-using Micropost.Models;
+using Microposts.Models;
 using System.Net.Mail;
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace Micropost.Controllers
+namespace Microposts.Controllers
 {
     public class UserMailerController : MailerBase
     {

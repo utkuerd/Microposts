@@ -3,8 +3,10 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace Micropost.Models
+namespace Microposts.Models
 {
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser<int, CustomUserLogin, CustomUserRole, CustomUserClaim>
@@ -12,13 +14,20 @@ namespace Micropost.Models
         [Required]
         [StringLength(50)]
         public string FullName { get; set; }
+        public virtual ICollection<Micropost> Microposts { get; set; } = new List<Micropost> ();
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser, int> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
+            userIdentity.AddClaim(new Claim("FullName", this.FullName));            
             return userIdentity;
+        }
+
+        public IEnumerable<Micropost> Feed()
+        {
+            return Microposts.Where(mp => mp.User.Id == this.Id).OrderByDescending(mp => mp.CreatedAt);
         }
     }
 

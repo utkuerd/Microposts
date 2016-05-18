@@ -1,9 +1,10 @@
-﻿using FluentValidation.Mvc;
+﻿using System.Web.Optimization;
+using FluentValidation.Mvc;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 
-namespace Micropost
+namespace Microposts
 {
     public class MvcApplication : System.Web.HttpApplication
     {

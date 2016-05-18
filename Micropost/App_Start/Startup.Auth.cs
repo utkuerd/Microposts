@@ -4,9 +4,9 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
-using Micropost.Models;
+using Microposts.Models;
 
-namespace Micropost
+namespace Microposts
 {
     public partial class Startup
     {

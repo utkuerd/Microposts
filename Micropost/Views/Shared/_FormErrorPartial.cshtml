@@ -1,7 +1,6 @@
-﻿@using System.Data.Entity.Design.PluralizationServices
+﻿@using Humanizer
 @{
     var errors = ViewData.ModelState.Values.SelectMany(x => x.Errors);
-    var plService = PluralizationService.CreateService(new System.Globalization.CultureInfo("en-US"));
     var modelErrors = errors as ModelError[] ?? errors.ToArray();
 }
 
@@ -9,9 +8,7 @@
 {
     <div id="error_explanation" class="validation-summary-valid">
         <div class="alert alert-danger">
-            The form contains @modelErrors.Count() @(modelErrors.Count() > 1 ?
-                                                         plService.Pluralize("error") :
-                                                         "error").
+            The form contains @{"error".ToQuantity(@modelErrors.Count());}.
         </div>
         @Html.ValidationSummary(false)
     </div>

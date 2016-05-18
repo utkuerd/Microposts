@@ -1,14 +1,39 @@
-﻿using System.Web.Mvc;
+﻿using Microposts.DataAccess;
+using Microposts.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using PagedList;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
 
-namespace Micropost.Controllers
+namespace Microposts.Controllers
 {
     public class StaticPagesController : Controller
     {
         [HttpGet]
         [Route("",Name="Default")]
-        public ActionResult Home()
+        public async Task<ActionResult> Home(int? page)
         {            
-            return View();
+            if (Request.IsAuthenticated)
+            {
+                
+                var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                var user = await userManager.FindByIdAsync(User.Identity.GetUserId<int>());
+
+                var context = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+                ViewBag.MicropostCount = user.Microposts.Count();
+
+                int pageSize = 25;
+                ViewBag.FeedItems = user.Feed().ToPagedList(page ?? 1, pageSize);
+
+                return View();
+            }
+            else
+            {
+                return View();
+            }
         }
 
         [HttpGet]

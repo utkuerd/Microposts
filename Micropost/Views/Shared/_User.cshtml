@@ -1,6 +1,6 @@
-﻿@model Micropost.Models.ApplicationUser
+﻿@model Microposts.Models.ApplicationUser
 <li>
-    @GravatarHelper.Gravatar(Model.Email, Model.FullName, "50")
+    @GravatarHelper.Gravatar(Model.FullName, Model.Email, "50")
     @if (User.IsInRole("Admin") && User != Model)
     {
         using (Html.BeginRouteForm("UserDelete", new { area = "", id = Model.Id }, FormMethod.Post, new {@class= "form-inline" , id = "deleteForm"+Model.Id}))

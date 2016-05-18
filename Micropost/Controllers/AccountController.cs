@@ -5,9 +5,9 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Micropost.Models;
+using Microposts.Models;
 
-namespace Micropost.Controllers
+namespace Microposts.Controllers
 {
     [Authorize]
     public class AccountController : Controller

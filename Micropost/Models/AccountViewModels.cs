@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Micropost.Models
+namespace Microposts.Models
 {
 
     public class LoginViewModel

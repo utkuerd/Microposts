@@ -1,0 +1,27 @@
+﻿@model Microposts.Models.Micropost
+@using Humanizer
+
+<li id="micropost-@Model.Id">
+    @GravatarHelper.Gravatar(Model.User.FullName, Model.User.Email, "50")
+    <span class="user">@Html.RouteLink(Model.User.FullName, "User", new { id = Model.User.Id })</span>
+    <span class="content">
+        @Model.Content
+        @if (Model.Image != null)
+        {
+            <img src="@Model.Image" />
+        }
+    </span>
+    <span class="timestamp">
+        Posted @Model.CreatedAt.Humanize(utcDate : false).
+        @if (Model.User.UserName == User.Identity.Name)
+        {
+            using (Html.BeginRouteForm("MicropostDelete", new { area = "", micropostId = Model.Id }, FormMethod.Post, new { @class = "form-inline", id = "deleteForm" + Model.Id }))
+            {
+                @Html.HttpMethodOverride(HttpVerbs.Delete)
+                @Html.AntiForgeryToken()
+
+                @Html.RouteLink("delete", "MicropostDelete", new { id = Model.Id }, htmlAttributes: new { @class = "deletelink", id = "deleteLink" + Model.Id })
+            }
+        }
+    </span>
+</li>

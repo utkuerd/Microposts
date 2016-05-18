@@ -1,16 +1,15 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
 using CsQuery.ExtensionMethods.Internal;
-using Micropost.Helper;
+using Microposts.Helper;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Micropost.Models;
+using Microposts.Models;
 
-namespace Micropost.Controllers
+namespace Microposts.Controllers
 {
     [Authorize]
     public class ManageController : Controller

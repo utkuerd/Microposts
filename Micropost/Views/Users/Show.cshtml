@@ -1,5 +1,7 @@
-﻿@model Micropost.Models.ApplicationUser
-
+﻿@using PagedList;
+@using PagedList.Mvc;
+@using Microposts.Models;
+@model ApplicationUser
 @{
     ViewBag.Title = Model.FullName;
 }
@@ -7,10 +9,31 @@
     <aside class="col-md-4">
         <section class="user_info">            
             <h1>
-                @GravatarHelper.Gravatar(Model.Email.ToLower(),Model.FullName)
+                @GravatarHelper.Gravatar(Model.FullName, Model.Email)
                 @Model.FullName
             </h1>
         </section>
     </aside>
+    <div class="col-md-8">
+        @if (((IPagedList<Micropost>)ViewBag.Microposts).Any())
+        {
+            <h3>Microposts (@Model.Microposts.Count)</h3>
+            <ol class="microposts">
+                @Html.PagedListPager((IPagedList)ViewBag.Microposts,
+                page => Url.Action("Show", new
+                {
+                    page,
+                    sortOrder = ViewBag.CurrentSort,
+                    currentFilter = ViewBag.CurrentFilter
+                }))
+                @foreach (var item in (IPagedList<Micropost>)ViewBag.Microposts)
+                {
+                    @Html.Partial("_Micropost", item)
+                }
+                @Html.PagedListPager((IPagedList)ViewBag.Microposts, page => Url.Action("Index",
+                new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+            </ol>
+        }
+    </div>
 </div>
 

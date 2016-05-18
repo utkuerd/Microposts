@@ -1,0 +1,17 @@
+﻿        @model Microposts.ViewModels.NewMicropost
+
+@using (Html.BeginRouteForm("MicropostCreate", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.Partial("_FormErrorPartial", Model)
+    <div class="field">
+        @Html.TextAreaFor(m => m.TweetContent)
+    </div>
+    <input type="submit" value="Post" class="btn btn-primary" />
+    <span class="picture">
+        @Html.TextBoxFor(m => m.File, new { type = "file", accept=".jpg, .jpeg, .gif, .png", id = "micropost_picture"})
+    </span>
+    @Html.HiddenFor(m => m.objectContext)
+}
+

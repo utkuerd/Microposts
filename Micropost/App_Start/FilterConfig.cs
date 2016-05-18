@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace Micropost
+namespace Microposts
 {
     public class FilterConfig
     {

@@ -1,12 +1,16 @@
-﻿using System.Web.Optimization;
+﻿using Backload.Bundles;
+using System.Web.Optimization;
 
-namespace Micropost
+namespace Microposts
 {
     public class BundleConfig
     {
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            // Add or remove this line for the bundeling feature
+            BackloadBundles.RegisterBundles(bundles);
+
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 

@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity.Owin;
 
-namespace Micropost.Controllers
+namespace Microposts.Controllers
 {
     [Authorize]
     public class UsersController : Controller
@@ -36,9 +36,13 @@ namespace Micropost.Controllers
 
         [HttpGet]
         [Route("users/{id}", Name = "User")]
-        public async Task<ActionResult> Show(int id)
+        public async Task<ActionResult> Show(int id, int? page)
         {
+            int pageSize = 25;
+
             var user = await UserManager.FindByIdAsync(id);
+            var microposts = user.Microposts;
+            ViewBag.Microposts = microposts.ToPagedList(page ?? 1, pageSize);            
             return View(user);
         }
         

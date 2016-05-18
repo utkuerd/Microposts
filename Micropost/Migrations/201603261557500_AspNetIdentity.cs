@@ -1,4 +1,4 @@
-namespace Micropost.Migrations
+namespace Microposts.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
