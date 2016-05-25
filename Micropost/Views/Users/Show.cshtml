@@ -7,14 +7,21 @@
 }
 <div class="row">
     <aside class="col-md-4">
-        <section class="user_info">            
+        <section class="user_info">
             <h1>
                 @GravatarHelper.Gravatar(Model.FullName, Model.Email)
                 @Model.FullName
             </h1>
         </section>
+        <section class="stats">
+            @Html.Partial("_Stats",Model)
+        </section>
     </aside>
     <div class="col-md-8">
+        @if (Request.IsAuthenticated)
+        {
+            @Html.Partial("_FollowForm", Model)
+        }
         @if (((IPagedList<Micropost>)ViewBag.Microposts).Any())
         {
             <h3>Microposts (@Model.Microposts.Count)</h3>
@@ -37,3 +44,13 @@
     </div>
 </div>
 
+@section scripts 
+{
+    <script>
+        function follow_callback(data)
+        {
+            $("#follow_form").html(data.view);
+            $("#followers").html(data.count);            
+        }
+    </script>
+}

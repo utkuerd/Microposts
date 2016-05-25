@@ -22,9 +22,9 @@ namespace Microposts.Controllers
                 var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
                 var user = await userManager.FindByIdAsync(User.Identity.GetUserId<int>());
 
-                var context = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
-                ViewBag.MicropostCount = user.Microposts.Count();
+                ViewBag.User = user;
 
+                
                 int pageSize = 25;
                 ViewBag.FeedItems = user.Feed().ToPagedList(page ?? 1, pageSize);
 

@@ -5,5 +5,5 @@
 @GravatarHelper.Gravatar(User.GetFullName(), User.Identity.Name, size: "50")
 <h1>@User.GetFullName()</h1>
 <span>@Html.RouteLink("view my profile", "User", new { id = User.Identity.GetUserId<int>() })</span>
-@{ var micropostCount = "micropost".ToQuantity((int)ViewBag.MicropostCount); }
+@{ var micropostCount = "micropost".ToQuantity((int)ViewBag.User.Microposts.Count); }
 <span>@micropostCount</span>

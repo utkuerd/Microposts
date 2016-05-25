@@ -292,15 +292,17 @@
     <Compile Include="Backload\Helper\ResultCreator.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\MicropostController.cs" />
+    <Compile Include="Controllers\RelationshipsController.cs" />
     <Compile Include="Controllers\StaticPagesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\UserMailerController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="DataAccess\MicropostRepository.cs" />
+    <Compile Include="DataAccess\UserRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helper\GetFullName.cs" />
+    <Compile Include="Helper\GetUserExtendedProperties.cs" />
     <Compile Include="Helper\SelfPostAuthorizeAttribute.cs" />
     <Compile Include="Helper\SelfAuthorizeAttribute.cs" />
     <Compile Include="Migrations\201602242334510_Initialize.cs" />
@@ -363,7 +365,12 @@
     <Compile Include="Migrations\201605171355440_ImageURL.Designer.cs">
       <DependentUpon>201605171355440_ImageURL.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605192012491_FollowingUsers.cs" />
+    <Compile Include="Migrations\201605192012491_FollowingUsers.Designer.cs">
+      <DependentUpon>201605192012491_FollowingUsers.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\TriggerInitializer.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\DBContext.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -734,6 +741,8 @@
     <Content Include="Scripts\jquery-2.2.1.js" />
     <Content Include="Scripts\jquery-2.2.1.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -750,6 +759,10 @@
     <Content Include="Views\Shared\_UserInfo.cshtml" />
     <Content Include="Views\Shared\_MicropostForm.cshtml" />
     <Content Include="Views\Shared\_Feed.cshtml" />
+    <Content Include="Views\Shared\_Stats.cshtml" />
+    <Content Include="Views\Shared\_FollowForm.cshtml" />
+    <Content Include="Views\Shared\_Follow.cshtml" />
+    <Content Include="Views\Shared\_Unfollow.cshtml" />
     <None Include="Views\UserMailer\PasswordReset.txt.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -781,6 +794,7 @@
     <Content Include="Views\UserMailer\AccountActivation.html.cshtml" />
     <Content Include="Views\UserMailer\PasswordReset.html.cshtml" />
     <None Include="Views\UserMailer\AccountActivation.txt.cshtml" />
+    <Content Include="Views\Users\ShowFollow.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201602242334510_Initialize.resx">
@@ -828,6 +842,9 @@
     <EmbeddedResource Include="Migrations\201605171355440_ImageURL.resx">
       <DependentUpon>201605171355440_ImageURL.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605192012491_FollowingUsers.resx">
+      <DependentUpon>201605192012491_FollowingUsers.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -841,6 +858,7 @@
   <ItemGroup>
     <Folder Include="Views\Home\" />
     <Folder Include="Views\Micropost\" />
+    <Folder Include="Views\Relationships\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

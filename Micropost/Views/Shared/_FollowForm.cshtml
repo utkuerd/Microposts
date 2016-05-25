@@ -1,0 +1,15 @@
+﻿@using Microposts.Models
+@model ApplicationUser
+@if (!User.Equals(Model))
+{
+    <div id="follow_form">
+        @if (ViewBag.Following)
+        {
+            @Html.Partial("_Unfollow",Model)
+        }
+        else
+        {
+            @Html.Partial("_Follow",Model)
+        }
+    </div>
+}

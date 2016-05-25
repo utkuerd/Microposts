@@ -21,7 +21,19 @@ namespace Microposts.Models
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {   
             base.OnModelCreating(modelBuilder);     
-            modelBuilder.Entity<CustomRole>().Property(r => r.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);                       
+            modelBuilder.Entity<CustomRole>().Property(r => r.Id).
+                HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
+                modelBuilder.Entity<ApplicationUser>()
+                    .HasMany(user => user.Following)
+                    .WithMany(user => user.Followers)
+                    .Map(m =>
+                        {
+                            m.ToTable("Relationships");
+                            m.MapLeftKey("FollowerId");
+                            m.MapRightKey("FollowedId");                        
+                        }
+                    );
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNet.Identity
 @using System.Web.Mvc
 @using Microsoft.AspNet.Identity.Owin;
+@using Microposts.Models
 @model Microposts.ViewModels.NewMicropost
 
 @if (Request.IsAuthenticated)
@@ -9,6 +10,9 @@
         <aside class="col-md-4">
             <section class="user_info">
                 @Html.Partial("_UserInfo")                
+            </section>
+            <section class="stats">
+                @Html.Partial("_Stats", ((ApplicationUser) ViewBag.User))
             </section>
             <section class="micropost_form">
                 @Html.Partial("_MicropostForm")                

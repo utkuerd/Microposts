@@ -3,6 +3,9 @@ using FluentValidation.Mvc;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using System.Data.Entity;
+using Microposts.Models;
+using Microposts.Migrations;
 
 namespace Microposts
 {
@@ -16,6 +19,7 @@ namespace Microposts
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             FluentValidationModelValidatorProvider.Configure(provider =>
                                                                 provider.AddImplicitRequiredValidator = false);
+            Database.SetInitializer<ApplicationDbContext>(new TriggerInitializer());
         }
     }
 }

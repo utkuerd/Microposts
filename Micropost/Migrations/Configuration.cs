@@ -67,8 +67,8 @@ namespace Microposts.Migrations
                     }
                 }
             }
-
-            var users = context.Users.OrderBy(user => user.Id).Take(6).ToList();
+            var allUsers = context.Users.OrderBy(user => user.Id).ToList();
+            var users = allUsers.Take(6).ToList();
             for (int i = 0; i < 50; i++)
             {
                 var content = Lorem.Sentence(5);
@@ -77,7 +77,19 @@ namespace Microposts.Migrations
                     Micropost m = new Micropost { Content = content, User = user, CreatedAt = DateTime.Now };
                     user.Microposts.Add(m);
                 }
-            }          
+            }
+
+            var mainUser = allUsers.First();
+            var following = allUsers.Where((user, index) => index > 0 && index < 50);
+            var followers = allUsers.Where((user, index) => index > 1 && index < 40);
+            foreach(var user in following)
+            {
+                mainUser.Follow(user);
+            }
+            foreach(var user in followers)
+            {
+                user.Follow(mainUser);
+            }
         }       
     }
 }

@@ -85,6 +85,13 @@ namespace Microposts
         {
             return ((EmailService) EmailService).SendForgetPasswordMail(user, forgetPasswordCode);
         }
+
+        public async Task<bool> Following(int usr1, int usr2)
+        {
+            var user1 = await FindByIdAsync(usr1);
+            var user2 = await FindByIdAsync(usr2);
+            return user1.Following.Contains(user2);
+        }
     }
 
     // Configure the application sign-in manager which is used in this application.

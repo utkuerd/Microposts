@@ -1,0 +1,10 @@
+﻿@using Microposts.Models
+@model ApplicationUser
+
+@using (Ajax.BeginRouteForm("Unfollow", new { id = Model.Id }, new AjaxOptions { HttpMethod = "Delete", OnSuccess = "follow_callback" }))
+{
+    @Html.AntiForgeryToken()    
+    
+    <input type="submit" value="Unfollow" class="btn" />
+}
+

@@ -1,0 +1,21 @@
+﻿@using Microposts.Helper
+@using Microposts.Models
+@using Microsoft.AspNet.Identity
+@model ApplicationUser
+@{ 
+    var user = Model ?? ViewBag.User;    
+}
+<div class="stats">    
+    <a href="@Url.RouteUrl("FollowedUsers", new { id = user.Id})">
+        <strong id="following" class="stat">
+            @user.Following.Count            
+        </strong>
+        following
+    </a>
+    <a href="@Url.RouteUrl("FollowingUsers", new { id = user.Id})">
+        <strong id="followers" class="stat">
+            @user.Followers.Count            
+        </strong>
+        followers
+    </a>
+</div>

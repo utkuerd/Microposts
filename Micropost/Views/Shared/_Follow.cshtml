@@ -1,0 +1,10 @@
+﻿@using Microposts.Models
+@model ApplicationUser
+
+@using (Ajax.BeginRouteForm("Follow", new AjaxOptions { HttpMethod = "Post", OnSuccess = "follow_callback" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div>@Html.HiddenFor(m => m.Id)</div>    
+    <input type="submit" value="Follow" class="btn btn-primary" />
+}

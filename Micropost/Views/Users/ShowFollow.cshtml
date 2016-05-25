@@ -1,0 +1,57 @@
+﻿@using Microposts.Helper
+@using Microsoft.AspNet.Identity
+@using Microposts.Models
+@using PagedList
+@using PagedList.Mvc;
+@model ICollection<ApplicationUser>
+@{
+    int pageSize = 25;
+    int? page = ViewBag.Page as int?;
+    var pageUsers = Model.ToPagedList(page ?? 1, pageSize);
+}
+<div class="row">
+    <aside class="col-md-4">
+        <section class="user_info">
+            @GravatarHelper.Gravatar(User.GetFullName(), User.Identity.Name, size: "50")
+            <h1>@User.GetFullName()</h1>
+            <span>@Html.RouteLink("view my profile", "User", new { id = User.Identity.GetUserId<int>() })</span>
+            <span><b>Microposts:</b> @ViewBag.User.Microposts.Count </span>
+        </section>
+        <section class="stats">
+            @Html.Partial("_Stats", ((ApplicationUser)ViewBag.User))
+            @if (Model.Any())
+            {
+                <div class="user_avatars">
+                    @foreach (var user in Model)
+                {
+                        <a href="@Url.Action("Show", new { id = user.Id })">
+                            @GravatarHelper.Gravatar(user.FullName, user.Email, size: "30")
+                        </a>
+                    }
+                </div>
+            }
+        </section>
+    </aside>
+    <div class="col-md-8">
+        <h3>@ViewBag.Title</h3>
+        @if (pageSize < Model.Count)
+        {
+            @Html.PagedListPager(pageUsers, p => Url.Action("Index",
+                                        new { p, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+        }
+        @if (Model.Any())
+        {
+            <ul class="users follow">
+                @foreach (var user in pageUsers)
+                {
+                    @Html.Partial("_User", user)
+                }
+            </ul>
+        }
+        @if (pageSize < Model.Count)
+        {
+            @Html.PagedListPager(pageUsers, p => Url.Action("Index",
+                                        new { p, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+        }
+    </div>
+</div>

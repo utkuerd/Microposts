@@ -5,6 +5,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
 using System.Linq;
+using System;
+using System.Web;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace Microposts.Models
 {
@@ -14,20 +17,40 @@ namespace Microposts.Models
         [Required]
         [StringLength(50)]
         public string FullName { get; set; }
-        public virtual ICollection<Micropost> Microposts { get; set; } = new List<Micropost> ();
+        public virtual ICollection<Micropost> Microposts { get; set; } = new List<Micropost>();
+        public virtual ICollection<ApplicationUser> Following { get; set; } = new List<ApplicationUser>();
+        public virtual ICollection<ApplicationUser> Followers { get; set; } = new List<ApplicationUser>();
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser, int> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
-            userIdentity.AddClaim(new Claim("FullName", this.FullName));            
+            userIdentity.AddClaim(new Claim("FullName", this.FullName));
+            userIdentity.AddClaim(new Claim("FollowingCount", this.Following.Count().ToString()));
+            userIdentity.AddClaim(new Claim("FollowerCount", this.Followers.Count().ToString()));    
+           
             return userIdentity;
+        }
+
+        internal void Unfollow(ApplicationUser user)
+        {
+            Following.Remove(user);
+            user.Followers.Remove(this);
         }
 
         public IEnumerable<Micropost> Feed()
         {
-            return Microposts.Where(mp => mp.User.Id == this.Id).OrderByDescending(mp => mp.CreatedAt);
+            var following = Following.Select(u => u.Id).ToList();
+            var query = HttpContext.Current.GetOwinContext().Get<ApplicationDbContext>().Microposts.Where(mp => mp.User.Id == this.Id || following.Contains(mp.User.Id) )
+                                .OrderByDescending(mp => mp.CreatedAt);
+            return query;
+        }
+
+        internal void Follow(ApplicationUser user)
+        {
+            Following.Add(user);
+            user.Followers.Add(this);            
         }
     }
 
